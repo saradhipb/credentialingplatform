@@ -1,0 +1,11 @@
+GROUP PRACTICE ENROLMENT PACKET
+
+Organization Name: Verde Canyon Urgent Care
+Entity Type: 2
+NPI Number: 2871930469
+License Number: CL-30288
+License State: Arizona
+Specialty: Clinic/Center - Urgent Care
+
+Business Address: 4150 E Cortez Dr Suite 5
+Sedona, AZ 86336

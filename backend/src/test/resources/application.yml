@@ -1,0 +1,34 @@
+# ===========================================================================
+# Test configuration.
+#
+# Tests run against an in-memory database that is created and discarded per
+# run, and with live registry lookups switched off so that no test depends on
+# an external service being reachable. The verification tests therefore
+# exercise the offline fallback path deliberately rather than by accident.
+# ===========================================================================
+spring:
+  datasource:
+    url: jdbc:h2:mem:credentialing-test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: false
+
+app:
+  storage:
+    upload-dir: ./target/test-uploads
+  nppes:
+    enabled: false
+  security:
+    seed-demo-users: true
+  ocr:
+    fail-on-missing-engine: false
+
+logging:
+  level:
+    edu.gcu.capstone.credentialing: WARN

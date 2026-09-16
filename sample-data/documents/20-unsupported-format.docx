@@ -1,0 +1,3 @@
+This file carries a .docx extension, which the platform does not accept.
+It exists to prove that the upload validator rejects an unsupported file
+type by extension, before any attempt is made to read the contents.

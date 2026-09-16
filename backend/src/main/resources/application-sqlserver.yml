@@ -1,0 +1,62 @@
+# ===========================================================================
+# SQL Server profile.
+#
+# Activate it with:
+#     java -jar credentialing-platform.jar --spring.profiles.active=sqlserver
+#
+# Only the settings that differ from application.yml appear here; everything
+# else - OCR, registry, exclusion list, model and risk weights - is inherited.
+# That is the point of a profile: one tested artifact, repointed at a different
+# database without being rebuilt.
+#
+# CONNECTION STRING NOTES
+#   * The Microsoft JDBC driver has defaulted to encrypt=true since version 10.
+#     A local SQL Server usually presents a self-signed certificate, which the
+#     driver refuses unless trustServerCertificate=true is set. The connection
+#     is still encrypted; the certificate is simply not validated. In a hosted
+#     deployment, install a trusted certificate and remove that parameter.
+#   * For a named instance such as SQLEXPRESS, use the instanceName parameter
+#     rather than a backslash, which YAML would treat as an escape:
+#       jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;databaseName=credentialing;...
+#   * Credentials come from the DB_USERNAME and DB_PASSWORD environment
+#     variables. The values after the colon are development defaults only and
+#     must be overridden in any real deployment.
+# ===========================================================================
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:sqlserver://localhost:1433;databaseName=credentialing;encrypt=true;trustServerCertificate=true}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: ${DB_USERNAME:cred_app}
+    password: ${DB_PASSWORD:Cred@pp2026!}
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      pool-name: credentialing-pool
+
+  jpa:
+    hibernate:
+      # The schema created by docs/database/01-schema-sqlserver.sql matches the
+      # entity model exactly, so this setting finds nothing to change and acts
+      # as a safety net if a column is ever missed. Set it to "validate" to make
+      # a mismatch fail at start-up instead, or "none" once the schema is under
+      # the control of a migration tool.
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 25
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+    show-sql: false
+
+  # The H2 console has nothing to connect to under this profile.
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    edu.gcu.capstone.credentialing: INFO
+    org.hibernate.SQL: WARN

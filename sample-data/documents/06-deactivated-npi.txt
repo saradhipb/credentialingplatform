@@ -1,0 +1,11 @@
+NURSE PRACTITIONER CREDENTIAL RECORD
+
+Provider Name: Alvarado, Beatriz, N.P.
+Entity Type: 1
+NPI: 1192837460
+License Number: NP-44018
+License State: AZ
+Specialty: Nurse Practitioner - Family
+
+Practice Address: 1875 W Chandler Blvd
+Chandler, AZ 85224

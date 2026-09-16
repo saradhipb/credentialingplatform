@@ -1,0 +1,113 @@
+# ===========================================================================
+# AI-Enhanced Provider Credentialing Automation Platform
+# Runtime configuration for the Spring Boot backend service.
+#
+# Every value below can be overridden with an environment variable or a
+# command-line argument, which is how credentials and environment-specific
+# settings are kept out of the source tree (Milestone 3, Section 7 "Data
+# Security"). For example:
+#     java -jar credentialing-platform.jar --app.nppes.enabled=false
+#     set APP_STORAGE_UPLOAD_DIR=D:\credentialing\uploads
+# ===========================================================================
+
+spring:
+  application:
+    name: credentialing-platform
+
+  # --- Embedded SQL database -------------------------------------------------
+  # H2 in file mode gives the prototype a real SQL engine with no external
+  # server to install. The JDBC URL is the only line that changes when the
+  # platform is repointed at PostgreSQL or SQL Server in a hosted deployment.
+  datasource:
+    url: jdbc:h2:file:./data/credentialing;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: ${DB_USERNAME:cred_app}
+    password: ${DB_PASSWORD:change-me-in-deployment}
+
+  jpa:
+    hibernate:
+      ddl-auto: update          # Schema is generated from the JPA entities.
+    open-in-view: false         # Avoids lazy-loading outside the service layer.
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+  h2:
+    console:
+      enabled: true             # Developer aid only; disable in production.
+      path: /h2-console
+
+  # --- Uploaded document limits ---------------------------------------------
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 20MB
+
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: always
+
+logging:
+  level:
+    edu.gcu.capstone.credentialing: INFO
+    org.hibernate.SQL: WARN
+
+# ===========================================================================
+# Application-specific settings, bound to ApplicationProperties.java
+# ===========================================================================
+app:
+  storage:
+    # Directory that receives uploaded credential documents.
+    upload-dir: ${APP_STORAGE_UPLOAD_DIR:./uploads}
+    # Uploaded binaries are purged after this many days. The extracted,
+    # minimised fields stay in the database; the source image does not.
+    retention-days: 7
+
+  ocr:
+    # Absolute path or command name of the Tesseract OCR executable.
+    tesseract-command: ${APP_OCR_TESSERACT_COMMAND:tesseract}
+    language: eng
+    timeout-seconds: 60
+    # When Tesseract is unavailable the platform still extracts the text
+    # layer of digital PDFs and routes image-only documents to manual review.
+    fail-on-missing-engine: false
+
+  nppes:
+    # CMS NPPES NPI Registry public read API (no API key required).
+    base-url: ${APP_NPPES_BASE_URL:https://npiregistry.cms.hhs.gov/api/}
+    version: "2.1"
+    enabled: ${APP_NPPES_ENABLED:true}
+    connect-timeout-ms: 5000
+    read-timeout-ms: 8000
+    max-retries: 2
+    # Bundled snapshot used when the live registry cannot be reached.
+    offline-dataset: classpath:data/nppes-offline-snapshot.json
+
+  oig:
+    # Local copy of the HHS OIG List of Excluded Individuals/Entities (LEIE).
+    leie-file: classpath:data/oig-leie-sample.csv
+    # Minimum Jaro-Winkler similarity for a name to count as a possible match.
+    name-match-threshold: 0.92
+
+  ml:
+    trees: 120                  # Number of isolation trees in the forest.
+    sample-size: 128            # Sub-sample size used to build each tree.
+    random-seed: 42             # Fixed seed keeps prototype results repeatable.
+    anomaly-threshold: 0.60     # Score at or above this is reported anomalous.
+
+  risk:
+    # Weights applied by RiskScoringService. They sum to 1.0.
+    weight-exclusion: 0.40
+    weight-npi: 0.25
+    weight-discrepancy: 0.20
+    weight-anomaly: 0.15
+    review-threshold: 40        # Score >= 40 -> REVIEW
+    reject-threshold: 70        # Score >= 70 -> REJECT
+
+  security:
+    session-timeout-minutes: 30
+    # Demonstration accounts seeded at first start-up. In an operational
+    # deployment these are replaced by the organization's identity provider.
+    seed-demo-users: true

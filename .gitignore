@@ -1,0 +1,21 @@
+# Build output
+backend/target/
+frontend/dist/
+frontend/.angular/
+frontend/node_modules/
+
+# The compiled Angular bundle is copied here by the build script
+backend/src/main/resources/static/*
+!backend/src/main/resources/static/.gitkeep
+
+# Runtime data created when the platform runs
+uploads/
+data/
+*.mv.db
+*.trace.db
+
+# Editor and operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

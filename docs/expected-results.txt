@@ -1,0 +1,74 @@
+EXPECTED RESULTS FOR THE SAMPLE DOCUMENT SET
+AI-Enhanced Provider Credentialing Automation Platform
+
+HOW THESE FIGURES WERE PRODUCED
+  The platform's own VerificationService, FeatureExtractor, AnomalyDetectionService
+  and RiskScoringService classes were run, unmodified, over the sample documents
+  offline. Text was extracted with the same engines the application uses: the PDF
+  text layer for PDFs, Tesseract for images, direct reading for text files. These
+  are therefore measurements of the implementation, not estimates of it.
+
+TEST CONDITIONS
+  Live registry lookups disabled (app.nppes.enabled=false). The identifiers in the
+  sample documents satisfy the CMS check-digit algorithm so that validation can be
+  exercised, but they are not issued NPIs, so the live registry holds no record for
+  them. Every lookup below therefore resolves from the bundled offline snapshot and
+  is stamped OFFLINE_FALLBACK, which is correct and expected.
+
+  Run the end-to-end suite the same way:
+      java -jar backend/target/credentialing-platform.jar --app.nppes.enabled=false
+      node tools/system-test.mjs
+
+COLUMNS
+  conf   extraction confidence, 0.00 to 1.00
+  disc   number of fields that differed from the registry record
+  high   how many of those were identity-defining fields (HIGH severity)
+  miss   expected fields absent from the document, out of seven
+  anom   anomaly score, 0.000 to 1.000; flagged at or above 0.600
+  flg    whether the anomaly detector reported the record as anomalous
+  score  composite risk score, 0 to 100
+
+Model: isolation-forest-120t-128s-seed42  threshold 0.60  precision 0.893  recall 1.000  F1 0.943  accuracy 0.970
+
+document                               engine         conf  npi status             exclusion          disc  high miss anom   flg score  recommend provider status
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+01-verified-individual.txt             PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       0     0    0    0.516  no  7.7    APPROVE   ACTIVE
+      flags: Result came from the offline registry snapshot, not a live lookup
+02-excluded-provider.txt               PLAIN_TEXT     1.00  VALID                  EXCLUDED           0     0    0    0.506  no  47.6   REJECT    REJECTED
+      flags: Confirmed OIG exclusion matched by NPI | Result came from the offline registry snapshot, not a live lookup
+03-address-discrepancy.txt             PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       3     0    0    0.697  YES 21.0   REVIEW    FLAGGED
+      discrepancies: [{"field":"Practice address","documentValue":"4455 E Camelback Rd Suite 300","registryValue":"1930 S DOBSON RD","severity":"MEDIUM"},{"field":"City","documentValue":"Scottsdale","registryValue":"MESA","severity":"MEDIUM"},{"field":"Postal code","documentValue":"85018","registryValue":"852024410","severity":"LOW"}]
+      flags: Result came from the offline registry snapshot, not a live lookup | 3 fields differ from the registry record | Anomaly detector score 0.70. Flagged primarily on: Discrepancy volume; Discrepancy severity.
+04-invalid-npi.txt                     PLAIN_TEXT     1.00  INVALID_FORMAT         NOT_EXCLUDED       0     0    0    0.646  YES 34.7   REJECT    REJECTED
+      flags: Identifier failed the CMS check-digit test | Anomaly detector score 0.65. Flagged primarily on: NPI verification risk; Name similarity gap.
+05-missing-npi.txt                     PLAIN_TEXT     1.00  MISSING                NOT_EXCLUDED       0     0    1    0.638  YES 34.2   REVIEW    FLAGGED
+      flags: No NPI could be read from the submitted document | Anomaly detector score 0.64. Flagged primarily on: NPI verification risk; Name similarity gap.
+06-deactivated-npi.txt                 PLAIN_TEXT     1.00  DEACTIVATED            NOT_EXCLUDED       0     0    0    0.671  YES 30.1   REVIEW    FLAGGED
+      flags: NPI is present in the registry but deactivated | Result came from the offline registry snapshot, not a live lookup | Anomaly detector score 0.67. Flagged primarily on: NPI verification risk.
+07-organization-clean.txt              PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       0     0    0    0.560  no  8.4    APPROVE   ACTIVE
+      flags: Result came from the offline registry snapshot, not a live lookup
+08-possible-exclusion-name-match.txt   PLAIN_TEXT     1.00  UNAVAILABLE            POSSIBLE_MATCH     0     0    0    0.646  YES 50.2   REVIEW    MANUAL_REVIEW
+      flags: Possible OIG name match (98% similarity) requires confirmation | CMS registry unreachable; identifier not confirmed | Anomaly detector score 0.65. Flagged primarily on: OIG exclusion risk; Name similarity gap; NPI verification risk.
+09-poor-extraction.txt                 PLAIN_TEXT     -     no usable data -> MANUAL_REVIEW (no verification, no assessment)
+10-verified-individual-digital.pdf     PDF_TEXT_LAYER 0.97  VALID                  NOT_EXCLUDED       0     0    0    0.495  no  7.4    APPROVE   ACTIVE
+      flags: Result came from the offline registry snapshot, not a live lookup
+11-organization-digital.pdf            PDF_TEXT_LAYER 0.97  VALID                  NOT_EXCLUDED       0     0    0    0.548  no  8.2    APPROVE   ACTIVE
+      flags: Result came from the offline registry snapshot, not a live lookup
+12-scanned-individual.png              TESSERACT_OCR  0.95  VALID                  NOT_EXCLUDED       0     0    0    0.528  no  7.9    APPROVE   ACTIVE
+      flags: Result came from the offline registry snapshot, not a live lookup
+13-unreadable-scan.png                 TESSERACT_OCR  -     no usable data -> MANUAL_REVIEW (no verification, no assessment)
+14-name-mismatch.txt                   PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       1     1    0    0.678  YES 13.7   REVIEW    FLAGGED
+      discrepancies: [{"field":"Provider name","documentValue":"Nakamoto Kenzo","registryValue":"NAKAMURA, KENJI","severity":"HIGH"}]
+      flags: Result came from the offline registry snapshot, not a live lookup | 1 field differs from the registry record | Anomaly detector score 0.68. Flagged on the overall combination of signals rather than any single observation.
+15-organization-discrepancy.txt        PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       3     0    0    0.697  YES 21.0   REVIEW    FLAGGED
+      discrepancies: [{"field":"Practice address","documentValue":"4150 E Cortez Dr Suite 5","registryValue":"1200 N HUMPHREYS ST","severity":"MEDIUM"},{"field":"City","documentValue":"Sedona","registryValue":"FLAGSTAFF","severity":"MEDIUM"},{"field":"Postal code","documentValue":"86336","registryValue":"860012918","severity":"LOW"}]
+      flags: Result came from the offline registry snapshot, not a live lookup | 3 fields differ from the registry record | Anomaly detector score 0.70. Flagged primarily on: Discrepancy volume; Discrepancy severity.
+16-entity-type-mismatch.txt            PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       2     2    0    0.690  YES 17.4   REVIEW    FLAGGED
+      discrepancies: [{"field":"Provider name","documentValue":"Rivera Anton","registryValue":"SAGUARO VALLEY FAMILY CLINIC LLC","severity":"HIGH"},{"field":"NPI entity type","documentValue":"INDIVIDUAL","registryValue":"ORGANIZATION","severity":"HIGH"}]
+      flags: Result came from the offline registry snapshot, not a live lookup | 2 fields differ from the registry record | Anomaly detector score 0.69. Flagged primarily on: Discrepancy severity; Name similarity gap.
+17-duplicate-resubmission.txt          PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       0     0    0    0.516  no  7.7    APPROVE   ACTIVE
+      flags: Result came from the offline registry snapshot, not a live lookup
+18-unlabelled-layout.txt               PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       0     0    3    0.554  no  10.9   REVIEW    FLAGGED
+      flags: Result came from the offline registry snapshot, not a live lookup | 3 expected fields were absent from the document
+19-lowercase-and-zip-plus-four.txt     PLAIN_TEXT     1.00  VALID                  NOT_EXCLUDED       0     0    0    0.560  no  8.4    APPROVE   ACTIVE
+      flags: Result came from the offline registry snapshot, not a live lookup

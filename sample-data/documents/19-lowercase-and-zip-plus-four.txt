@@ -1,0 +1,12 @@
+arizona medical board
+primary source verification
+
+provider name: osei-bonsu, ama, m.d.
+entity type: 1
+npi number: 1320594876
+license number: f20477
+license state: arizona
+specialty: family medicine
+
+practice address: 2400 s avenue a
+yuma, az 85364-6510

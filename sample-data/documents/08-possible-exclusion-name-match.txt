@@ -1,0 +1,11 @@
+CREDENTIALING INTAKE FORM
+
+Provider Name: Calloway, Marcus D., M.D.
+Entity Type: 1
+NPI Number: 1234567893
+License Number: P33418
+License State: AZ
+Specialty: Internal Medicine
+
+Practice Address: 118 W Adams St
+Phoenix, AZ 85003
