@@ -10,7 +10,7 @@ backend/src/main/resources/static/*
 
 # Runtime data created when the platform runs
 uploads/
-data/
+#data/
 *.mv.db
 *.trace.db
 
