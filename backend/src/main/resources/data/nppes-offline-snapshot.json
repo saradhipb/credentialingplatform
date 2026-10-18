@@ -1,0 +1,337 @@
+{
+  "_comment": [
+    "Offline fallback snapshot of CMS NPPES registry records.",
+    "",
+    "PURPOSE. The platform calls the live NPPES public read API first. If the",
+    "registry cannot be reached, NppesClient consults this file so that a",
+    "demonstration or an evaluation run can complete. Every result served from",
+    "here is stamped OFFLINE_FALLBACK on the verification record, so a reviewer",
+    "can always tell a cached answer from a live one.",
+    "",
+    "CONTENT. These records are synthetic. The provider names, addresses and",
+    "license numbers are invented for this capstone project and describe no real",
+    "person or organization. The identifiers are constructed to satisfy the CMS",
+    "check-digit algorithm so that the validation path can be exercised, but they",
+    "are not issued NPIs. The JSON follows the shape of a real NPPES 2.1",
+    "response so that the same mapping code serves both sources.",
+    "",
+    "TO USE REAL DATA. Replace the records array with the results of live NPPES",
+    "queries, or point app.nppes.offline-dataset at a file of your own."
+  ],
+  "version": "2.1",
+  "generated": "2026-09-13",
+  "records": [
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1746805930",
+      "basic": {
+        "first_name": "DANA",
+        "last_name": "HARPER",
+        "middle_name": "R",
+        "credential": "M.D.",
+        "status": "A",
+        "enumeration_date": "2009-03-17"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "4410 N CENTRAL AVE STE 210",
+          "city": "PHOENIX",
+          "state": "AZ",
+          "postal_code": "850121847"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Family Medicine", "primary": true, "state": "AZ", "license": "A12345"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1283947566",
+      "basic": {
+        "first_name": "CHIDI",
+        "last_name": "OKAFOR",
+        "credential": "M.D.",
+        "status": "A",
+        "enumeration_date": "2012-08-02"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "1930 S DOBSON RD",
+          "city": "MESA",
+          "state": "AZ",
+          "postal_code": "852024410"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Internal Medicine", "primary": true, "state": "AZ", "license": "B77120"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1938475625",
+      "basic": {
+        "first_name": "MARTA",
+        "last_name": "LINDQVIST",
+        "credential": "D.O.",
+        "status": "A",
+        "enumeration_date": "2015-01-26"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "725 E APACHE BLVD",
+          "city": "TEMPE",
+          "state": "AZ",
+          "postal_code": "852812901"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Pediatrics", "primary": true, "state": "AZ", "license": "C30845"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-2",
+      "number": "2103948578",
+      "basic": {
+        "organization_name": "SAGUARO VALLEY FAMILY CLINIC LLC",
+        "status": "A",
+        "enumeration_date": "2011-06-14"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "5902 W NORTHERN AVE",
+          "city": "GLENDALE",
+          "state": "AZ",
+          "postal_code": "853013320"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Clinic/Center - Primary Care", "primary": true, "state": "AZ", "license": "CL-88431"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1458293762",
+      "basic": {
+        "first_name": "REGINALD",
+        "last_name": "WHITFIELD",
+        "credential": "M.D.",
+        "status": "A",
+        "enumeration_date": "2007-11-09"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "2810 E SPEEDWAY BLVD",
+          "city": "TUCSON",
+          "state": "AZ",
+          "postal_code": "857161104"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Cardiovascular Disease", "primary": true, "state": "AZ", "license": "D55219"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-2",
+      "number": "2681359404",
+      "basic": {
+        "organization_name": "DESERT RIDGE BEHAVIORAL HEALTH GROUP",
+        "status": "A",
+        "enumeration_date": "2016-04-21"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "15455 N SCOTTSDALE RD STE 140",
+          "city": "SCOTTSDALE",
+          "state": "AZ",
+          "postal_code": "852546004"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Clinic/Center - Mental Health", "primary": true, "state": "AZ", "license": "CL-21907"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1192837460",
+      "basic": {
+        "first_name": "BEATRIZ",
+        "last_name": "ALVARADO",
+        "credential": "N.P.",
+        "status": "D",
+        "enumeration_date": "2010-02-11"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "1875 W CHANDLER BLVD",
+          "city": "CHANDLER",
+          "state": "AZ",
+          "postal_code": "852241207"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Nurse Practitioner - Family", "primary": true, "state": "AZ", "license": "NP-44018"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-2",
+      "number": "2059483711",
+      "basic": {
+        "organization_name": "COPPER STATE IMAGING PARTNERS",
+        "status": "A",
+        "enumeration_date": "2013-09-30"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "9201 W THUNDERBIRD RD",
+          "city": "PEORIA",
+          "state": "AZ",
+          "postal_code": "853812210"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Radiology - Diagnostic", "primary": true, "state": "AZ", "license": "CL-67554"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1637482955",
+      "basic": {
+        "first_name": "KENJI",
+        "last_name": "NAKAMURA",
+        "credential": "M.D.",
+        "status": "A",
+        "enumeration_date": "2014-05-19"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "3420 S VAL VISTA DR",
+          "city": "GILBERT",
+          "state": "AZ",
+          "postal_code": "852976713"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Orthopaedic Surgery", "primary": true, "state": "AZ", "license": "E91336"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-2",
+      "number": "2871930469",
+      "basic": {
+        "organization_name": "VERDE CANYON URGENT CARE",
+        "status": "A",
+        "enumeration_date": "2018-07-05"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "1200 N HUMPHREYS ST",
+          "city": "FLAGSTAFF",
+          "state": "AZ",
+          "postal_code": "860012918"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Clinic/Center - Urgent Care", "primary": true, "state": "AZ", "license": "CL-30288"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1320594876",
+      "basic": {
+        "first_name": "AMA",
+        "last_name": "OSEI-BONSU",
+        "credential": "M.D.",
+        "status": "A",
+        "enumeration_date": "2017-10-12"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "2400 S AVENUE A",
+          "city": "YUMA",
+          "state": "AZ",
+          "postal_code": "853646510"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Family Medicine", "primary": true, "state": "AZ", "license": "F20477"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-2",
+      "number": "2418375608",
+      "basic": {
+        "organization_name": "GRAND MESA REHABILITATION SERVICES",
+        "status": "A",
+        "enumeration_date": "2019-02-28"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "805 WHIPPLE ST",
+          "city": "PRESCOTT",
+          "state": "AZ",
+          "postal_code": "863012844"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Rehabilitation Practitioner", "primary": true, "state": "AZ", "license": "CL-51166"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-1",
+      "number": "1562938401",
+      "basic": {
+        "first_name": "PRIYA",
+        "last_name": "RAGHUNATHAN",
+        "credential": "M.D.",
+        "status": "A",
+        "enumeration_date": "2020-11-03"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "1441 N 12TH ST",
+          "city": "PHOENIX",
+          "state": "AZ",
+          "postal_code": "850062160"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Dermatology", "primary": true, "state": "AZ", "license": "G78290"}
+      ]
+    },
+    {
+      "enumeration_type": "NPI-2",
+      "number": "2794610388",
+      "basic": {
+        "organization_name": "SONORAN PLAINS DIALYSIS CENTER",
+        "status": "A",
+        "enumeration_date": "2021-05-17"
+      },
+      "addresses": [
+        {
+          "address_purpose": "LOCATION",
+          "address_1": "640 E BROADWAY RD",
+          "city": "MESA",
+          "state": "AZ",
+          "postal_code": "852043318"
+        }
+      ],
+      "taxonomies": [
+        {"desc": "Clinic/Center - End-Stage Renal Disease (ESRD) Treatment",
+         "primary": true, "state": "AZ", "license": "CL-19073"}
+      ]
+    }
+  ]
+}
